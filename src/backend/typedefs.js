@@ -2,9 +2,11 @@ import { gql } from 'apollo-server-micro'
 
 export default gql`
   type Query {
-    users: [User!]!
+    users: [ User! ]!
+    user(id : ID!): User
   }
   type User {
-    name: String
+    id : ID!
+    name: String!
   }
 `

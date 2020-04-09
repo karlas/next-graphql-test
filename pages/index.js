@@ -1,3 +1,3 @@
-import Frontend from '../src/frontend'
+import Frontend from '../src/frontend/'
 
 export default Frontend
