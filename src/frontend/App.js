@@ -1,4 +1,5 @@
-import { useAppContext, useQuery } from './'
+import { useState, useEffect } from 'react'
+import { useAppContext, useQuery, useMutation } from './'
 
 const QueryFeedback = ({ loading, error, value }) => (
   <p>
@@ -9,7 +10,7 @@ const QueryFeedback = ({ loading, error, value }) => (
 )
 
 const Users = () => {
-  const queryResult = useQuery`
+  const queryState = useQuery`
     query {
       users{
         id,
@@ -17,18 +18,43 @@ const Users = () => {
       }
     }
   `
-  return <QueryFeedback { ...queryResult } />
+  return <QueryFeedback { ...queryState } />
 }
 
 const User = ({ id }) => {
-  const queryResult = useQuery(`
+  const queryState = useQuery(`
     query user($id: ID!){
       user(id: $id){
         name
       }
     }
   `, { id })
-  return <QueryFeedback { ...queryResult } />
+  return <QueryFeedback { ...queryState } />
+}
+
+const UpdateUser = () => {
+  const [ id, setId ] = useState('')
+  const [ name, setName ] = useState('')
+  const [ mutationState, mutate ] = useMutation`
+    mutation setName($id: ID!, $name: String!){
+      setName(id: $id, name: $name){
+        id
+      }
+    }
+  `
+  const { value, error } = mutationState
+  const success = !!value?.data.setName.id
+  useEffect(() => {
+     success && location.reload()
+  } , [ success ])
+  return (
+    <div>
+      <input type="text" placeholder="Enter id to update" value={ id } onChange={ e => setId(e.target.value) } />
+      <input type="text" placeholder="Enter name" value={ name } onChange={ e => setName(e.target.value) } />
+      <button onClick={ () => mutate({ id, name }) }>UPDATE NAME!</button>
+      <QueryFeedback { ...mutationState } />
+    </div>
+  )
 }
 
 export default () => {
@@ -41,6 +67,7 @@ export default () => {
       </a>
       <Users />
       <User id="3" />
+      <UpdateUser />
     </div>
   )
 }

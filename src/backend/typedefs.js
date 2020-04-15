@@ -5,6 +5,9 @@ export default gql`
     users: [ User! ]!
     user(id : ID!): User
   }
+  type Mutation {
+    setName(id: ID!, name: String!): User
+  }
   type User {
     id : ID!
     name: String!
