@@ -8,7 +8,7 @@
   },
   "dependencies": {
     "apollo-boost": "0.4.9",
-    "apollo-server-micro": "2.13.1",
+    "apollo-server-micro": "2.14.2",
     "cross-fetch": "3.0.4",
     "graphql": "15.0.0",
     "lowdb": "1.0.0",
